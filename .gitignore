@@ -1,0 +1,8 @@
+/bin/*.o
+/bin/.fuse*
+/bin
+/lib/*.so
+/lib/*.a
+/files/*.txt
+.directory
+.vscode
