@@ -7,4 +7,6 @@ typedef struct Request {
 
 Request parse_request(char *arg);
 
+char **str_split(char *str, const char delim);
+
 #endif
