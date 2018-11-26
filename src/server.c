@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "connection.h"
+#include "parser.h"
 #define BUFF_SIZE 1024
 
 void aux_write(int fd, char* buf, int size)
@@ -30,7 +31,8 @@ int main(int argc, char const *argv[]) {
         printf("ERROR on connection.\n");
     }
     else if (read(client.fd, buf, BUFF_SIZE)) {
-        aux_write(1, buf, BUFF_SIZE);
+        Request request = parse_request(buf);
+        printf("%s\n", request.url);
     }
     /*Fin de Conexión*/
     close(client.fd);    
