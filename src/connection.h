@@ -10,5 +10,13 @@
 #include <string.h>
 #include <sys/select.h>
 
+typedef struct client_info {
+    int fd;
+    int clientlen;
+    struct sockaddr_in clientaddr;
+} client_info;
+
 int get_listen_fd(int port);
+
+client_info get_client_fd(int listenfd);
 #endif
