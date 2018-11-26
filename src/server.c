@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
     bzero(buf, BUFF_SIZE);
     /*Fin de la inicialización*/
     /*Estableciendo conexión*/
-    client_info client = get_client_fd(listenfd);
+    Client client = get_client_fd(listenfd);
     if (client.fd < 0) {
         printf("ERROR on connection.\n");
     }
