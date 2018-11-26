@@ -19,8 +19,8 @@ int get_listen_fd(int port) {
     return listenfd;
 }
 
-client_info get_client_fd(int listenfd) {
-    client_info c;
+Client get_client_fd(int listenfd) {
+    Client c;
     c.clientlen = sizeof(c.clientaddr);
     c.fd = accept(listenfd, (struct sockaddr *)&c.clientaddr, &c.clientlen);
     return c;
