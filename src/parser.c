@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
 #include "parser.h"
 #include "list.h"
 
