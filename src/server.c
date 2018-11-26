@@ -1,20 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <poll.h>
 #include "connection.h"
 #include "parser.h"
 #define BUFF_SIZE 1024
-
-void aux_write(int fd, char* buf, int size)
-{
-  int left = size;
-  while(1)
-  {
-     int n = write(fd, buf, left);
-     left-=n;
-     if(n<=0 || left<=0) break; 
-  }  
-}
 
 int main(int argc, char const *argv[]) {
     /*Iniciar el server*/
@@ -23,19 +13,43 @@ int main(int argc, char const *argv[]) {
     chdir(fdir);
     int listenfd = get_listen_fd(port);
     char buf[BUFF_SIZE];
-    bzero(buf, BUFF_SIZE);
+    int clientslen = 0;
+    Client clients[100];
     /*Fin de la inicialización*/
-    /*Estableciendo conexión*/
-    Client client = get_client_fd(listenfd);
-    if (client.fd < 0) {
-        printf("ERROR on connection.\n");
+
+    while(1) {
+      /*Iniciar conjunto del Poll*/
+      struct pollfd *fds = malloc((clientslen + 1) * sizeof(struct pollfd));
+      fds[0].fd = listenfd;
+      fds[0].events = POLLIN;
+      fds[0].revents = 0;
+      for(int i = 0; i < clientslen; ++i) {
+        fds[i+1].fd = clients[i].fd;
+        fds[i+1].events = POLLIN | POLLOUT;
+        fds[i+1].revents = 0;
+      }
+      /*Ejecutando poll*/
+      poll(fds, clientslen + 1, -1);
+      /*Ver nuevas conexiones*/
+      if(fds[0].revents & POLLIN) {
+        Client newclient = get_client_fd(listenfd);
+        clients[clientslen++] = newclient;
+      }
+      for(int i=0; i < clientslen; ++i) {
+        if((fds[i+1].revents & POLLIN) && (fds[i+1].revents & POLLOUT)) {
+          bzero(buf, BUFF_SIZE);
+          read(fds[i+1].fd, buf, BUFF_SIZE);
+          Request request = parse_request(buf);
+          printf("Petición a la url: %s\n", request.url);
+          write(fds[i+1].fd, "HELLO FROM THE OTHER SIDE!", 26);
+          close(fds[i+1].fd);
+          clients[i].fd = -1;
+        }
+      }
+      /*Liberar conjunto viejo*/
+      free(fds);
     }
-    else if (read(client.fd, buf, BUFF_SIZE)) {
-        Request request = parse_request(buf);
-        printf("%s\n", request.url);
-    }
-    /*Fin de Conexión*/
-    close(client.fd);    
+    /*Fin de Conexión*/  
     close(listenfd);
     return 0;
 }
