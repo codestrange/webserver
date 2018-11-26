@@ -59,7 +59,7 @@ char index_charlist(CharList *list, int index) {
     return list->array[index];
 }
 
-void free_charList(CharList *list) {
+void free_charlist(CharList *list) {
     free(list->array);
 }
 
@@ -118,10 +118,10 @@ CharList index_charcharlist(CharCharList *list, int index) {
     return list->array[index];
 }
 
-void free_charcharList(CharCharList *list) {
+void free_charcharlist(CharCharList *list) {
     CharList *charList = list->array;
     for (int i = 0; i < list->size; ++i) {
-        free_charList(charList++);
+        free_charlist(charList++);
     }
 }
 

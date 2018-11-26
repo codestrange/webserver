@@ -27,7 +27,7 @@ char pop_charlist(CharList *list);
 
 char index_charlist(CharList *list, int index);
 
-void free_charList(CharList *list);
+void free_charlist(CharList *list);
 
 CharCharList new_charcharlist(int capacity);
 
@@ -43,7 +43,7 @@ CharList pop_charcharlist(CharCharList *list);
 
 CharList index_charcharlist(CharCharList *list, int index);
 
-void free_charcharList(CharCharList *list);
+void free_charcharlist(CharCharList *list);
 
 char *convert_arraychar(CharList *charList);
 
