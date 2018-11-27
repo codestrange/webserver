@@ -5,4 +5,4 @@ run: compile
 	./bin/server ${port} ${fdir}
 
 compile: src/server.c
-	gcc -o bin/server src/server.c src/connection.c src/parser.c src/list.c
+	gcc -o bin/server src/server.c src/connection.c src/parser.c src/list.c src/files.c
