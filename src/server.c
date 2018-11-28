@@ -43,8 +43,7 @@ int main(int argc, char const *argv[]) {
             printf("Petición a la url: %s\n", request.url);
             char *dir = malloc(BUFF_SIZE * sizeof(char));
             getcwd(dir, BUFF_SIZE);
-            sprintf(dir + strlen(dir),"%s",request.url);
-            char *response = get_response(dir);
+            char *response = get_response(dir, request.url);
             write(fds[i+1].fd, response, strlen(response));
             free(response); 
           }

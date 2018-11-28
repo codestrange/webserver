@@ -1,12 +1,45 @@
 #ifndef FILES
 #define FILES
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
-char *get_response(char *path);
+#include <stdbool.h>
+
+typedef struct Directory {
+    char *path;
+    char *name;
+    char *size;
+    char *modified;
+} Directory;
+
+typedef struct DirectoryList {
+    Directory *array;
+    int size;
+    int capacity;
+} DirectoryList;
+
+DirectoryList new_directorylist(int capacity);
+
+void insert_directorylist(DirectoryList *list, int index, Directory item);
+
+void append_directorylist(DirectoryList *list, Directory item);
+
+void clear_directorylist(DirectoryList *list);
+
+Directory remove_directorylist(DirectoryList *list, int index);
+
+Directory pop_directorylist(DirectoryList *list);
+
+Directory index_directorylist(DirectoryList *list, int index);
+
+void free_directorylist(DirectoryList *list);
+
+int count_digits(int number);
+
+bool get_file(char *current_dir, char *path, char *filename, Directory *directory);
+
+bool get_files(char *current_dir, char *path, DirectoryList *directoryList);
+
+char *get_html(char *current_dir, char *path);
+
+char *get_response(char *current_dir, char *path);
+
 #endif
