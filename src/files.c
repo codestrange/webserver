@@ -7,7 +7,7 @@ char *get_html(char *path) {
 char *get_response(char *path) {
     char *html = get_html(path);
     char *response = malloc((strlen(html) + 100) * sizeof(char));
-    bzero(response, 2048);
+    bzero(response, strlen(html) + 100);
     sprintf(response, "HTTP/1.1 200 OK\nAccept-Ranges: bytes\nContent-Type: text/html;\nContent-Length: %ld\n\n%s", strlen(html), html);
     return response;
 }
