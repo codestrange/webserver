@@ -1928,38 +1928,26 @@
     </style>
 </head>
 
-<body class="w3-animate-zoom">
+<body>
     <div class="w3-card w3-responsive w3-hover-shadow w3-center w3-blue" style="margin: 10px">
         <header class="w3-container">
             <h1 style="text-shadow:1px 1px 0 #ffffff">Web Server</h1>
         </header>
     </div>
     <div class="w3-card w3-responsive w3-hover-shadow w3-center" style="margin: 10px">
-        <input class="w3-input w3-border w3-padding w3-normal" type="text" placeholder="Search for names ..." id="input"
+        <input class="w3-input w3-border w3-padding w3-tiny" type="text" placeholder="Search for names ..." id="input"
             onkeyup="filter(0)"></div>
-    <div class="w3-card w3-res  ponsive w3-hover-shadow w3-center" style="margin: 10px">
-        <table class="w3-table-all w3-normal w3-hoverable" id="table">
+    <div class="w3-card w3-animate-zoom w3-responsive w3-hover-shadow w3-center" style="margin: 10px">
+        <table class="w3-table-all w3-tiny w3-hoverable" id="table">
             <tbody>
                 <tr class="w3-blue">
                     <th>Name</th>
+                    <th>Size</th>
+                    <th>Modified</th>
                 </tr>
             </tbody>
             <tbody>
-                <tr>
-                    <td>Jill</td>
-                </tr>
-                <tr>
-                    <td>Eve</td>
-                </tr>
-                <tr>
-                    <td>Adam</td>
-                </tr>
-                <tr>
-                    <td>Bo</td>
-                </tr>
-                <tr>
-                    <td>Mike</td>
-                </tr>
+                %s
             </tbody>
         </table>
     </div>
@@ -1977,16 +1965,6 @@
                     } else {
                         tr[i].style.display = "none";
                     }
-                }
-            }
-        }
-
-        function sort(index) {
-            var table = document.getElementById("table");
-            var tr = table.getElementsByTagName("tr");
-            for (var i = 0; i < tr.length; ++i) {
-                for (var j = 0; j < tr.length; ++j) {
-
                 }
             }
         }
