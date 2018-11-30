@@ -1,6 +1,9 @@
 #ifndef FILES
 #define FILES
 
+#include "directory.h"
+#include "list.h"
+
 char *template;
 
 void get_table(CharList *charList, Directory *directory);
