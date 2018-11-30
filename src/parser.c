@@ -5,10 +5,12 @@
 #include "list.h"
 
 Request parse_request(char *arg) {
-    CharCharList charCharList = convert_CharCharList(str_split(arg, ' '));
+    //CharCharList charCharList = convert_CharCharList(str_split(arg, ' '));
     Request result;
-    CharList charList = index_charcharlist(&charCharList, 1);
-    result.url = convert_arraychar(&charList);
+    strtok(arg, " ");
+    //CharList charList = index_charcharlist(&charCharList, 1);
+    //result.url = convert_arraychar(&charList);
+    result.url = strtok(NULL, " ");
     return result;
 }
 

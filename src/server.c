@@ -11,11 +11,12 @@ int main(int argc, char const *argv[]) {
     /*Iniciar el server*/
     int port = atoi(argv[1]);
     char const *fdir = argv[2];
-    char *dir = malloc(BUFF_SIZE * sizeof(char));
-    getcwd(dir, BUFF_SIZE);
-    sprintf(dir, "%s%s%c", dir, "/index.html", '\0');
-    get_template(dir);
-    free(dir);
+    char *bdir = malloc(BUFF_SIZE * sizeof(char));
+    bzero(bdir, BUFF_SIZE);
+    getcwd(bdir, BUFF_SIZE);
+    sprintf(bdir + strlen(bdir), "%s%c", "/index.html", '\0');
+    get_template(bdir);
+    free(bdir);
     chdir(fdir);
     int listenfd = get_listen_fd(port);
     char buf[BUFF_SIZE];
@@ -24,7 +25,7 @@ int main(int argc, char const *argv[]) {
 
     while(1) {
       /*Iniciar conjunto del Poll*/
-      struct pollfd *fds = malloc((clients.size + 1) * sizeof(struct pollfd));
+      struct pollfd *fds = malloc((clients.size + 2) * sizeof(struct pollfd));
       fds[0].fd = listenfd;
       fds[0].events = POLLIN;
       fds[0].revents = 0;

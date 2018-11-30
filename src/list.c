@@ -123,6 +123,7 @@ void free_charcharlist(CharCharList *list) {
     for (int i = 0; i < list->size; ++i) {
         free_charlist(charList++);
     }
+    free(list->array);
 }
 
 char *convert_arraychar(CharList *charList) {

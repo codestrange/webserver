@@ -55,7 +55,7 @@ char *get_html(char *dir, char *url) {
     char *table = convert_arraychar(&charList);
     free_charlist(&charList);
     int len = strlen(template) + strlen(table) + 100;
-    char *html = malloc(len * sizeof(char));
+    char *html = malloc((len + 1) * sizeof(char));
     sprintf(html, template, table);
     free(table);
     html[len] = 0;
