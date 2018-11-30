@@ -5,12 +5,17 @@
 #include "connection.h"
 #include "parser.h"
 #include "files.h"
-#define BUFF_SIZE 1024
+#define BUFF_SIZE 2048
 
 int main(int argc, char const *argv[]) {
     /*Iniciar el server*/
     int port = atoi(argv[1]);
     char const *fdir = argv[2];
+    char *dir = malloc(BUFF_SIZE * sizeof(char));
+    getcwd(dir, BUFF_SIZE);
+    sprintf(dir, "%s%s%c", dir, "/index.html", '\0');
+    get_template(dir);
+    free(dir);
     chdir(fdir);
     int listenfd = get_listen_fd(port);
     char buf[BUFF_SIZE];
