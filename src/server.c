@@ -43,18 +43,18 @@ int main(int argc, char const *argv[]) {
         }
         for (int i = 0; i < clients.size; ++i) {
             if ((fds[i + 1].revents & POLLIN) && (fds[i + 1].revents & POLLOUT)) {
-            bzero(buf, BUFF_SIZE);
-            if (read(fds[i + 1].fd, buf, BUFF_SIZE) > 0) {
-                Request request = parse_request(buf);
-                printf("Petición a la url: %s\n", request.url);
-                char *dir = malloc(BUFF_SIZE * sizeof(char));
-                getcwd(dir, BUFF_SIZE);
-                char *response = get_response(dir, request.url);
-                write(fds[i + 1].fd, response, strlen(response));
-                free(response); 
-            }
-            close(fds[i + 1].fd);
-            remove_clientlist(&clients, i);
+                bzero(buf, BUFF_SIZE);
+                if (read(fds[i + 1].fd, buf, BUFF_SIZE) > 0) {
+                    Request request = parse_request(buf);
+                    printf("Petición a la url: %s\n", request.url);
+                    char *dir = malloc(BUFF_SIZE * sizeof(char));
+                    getcwd(dir, BUFF_SIZE);
+                    char *response = get_response(dir, request.url);
+                    write(fds[i + 1].fd, response, strlen(response));
+                    free(response); 
+                }
+                close(fds[i + 1].fd);
+                remove_clientlist(&clients, i);
             }
         }
         /*Liberar conjunto viejo*/

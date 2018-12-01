@@ -1,8 +1,14 @@
 #ifndef FILES
 #define FILES
 
+#include <sys/sendfile.h>
 #include "directory.h"
 #include "list.h"
+
+typedef struct File_Status{
+    int fd;
+    off_t *offset;
+} File_Status;
 
 char *template;
 
