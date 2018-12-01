@@ -60,8 +60,8 @@ int main(int argc, char const *argv[]) {
                 remove_filestatuslist(&filets, i);
                 send_file_response(&fs, fds[i + 1].fd);
                 insert_filestatuslist(&filets, i, fs);
-                if ( fs.fd == -1 ) {
-                    free(fs.fname);
+                if ( check.fd == -1 ) {
+                    free(check.fname);
                     ckill[i] = true;
                 }
             }
