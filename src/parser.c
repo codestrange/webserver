@@ -74,7 +74,20 @@ Request parse_request(char *arg) {
     Request result;
     CharList charList = index_charcharlist(&charCharList, 1);
     char *temp = convert_arraychar(&charList);
-    result.url = decode(temp);
+    char *request = decode(temp);
+    char **_splited = str_split(request, '?');
+    charCharList = convert_CharCharList(_splited);
+    CharList charList1 = index_charcharlist(&charCharList, 0);
+    char *_url = convert_arraychar(&charList1);
+    result.url = _url;
+    printf("%s ", result.url);
+    if (charCharList.size > 1) {
+        CharList charList2 = index_charcharlist(&charCharList, 1);
+        char *_param = convert_arraychar(&charList2);
+        result.param = _param;
+        printf("%s ", result.param);
+    }
+    printf("\n");
     free(temp);
     return result;
 }

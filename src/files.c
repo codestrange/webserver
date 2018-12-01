@@ -154,16 +154,17 @@ char *get_html(char *dir, char *url) {
     DirectoryList directories = new_directorylist(100);
     get_directories(dir, url, &directories);
     CharList charList = new_charlist(100);
-    for (int i = 0; i < directories.size; ++i) {
+    for (int i = 1; i < directories.size; ++i) {
         Directory directory = index_directorylist(&directories, i);
         get_table(&charList, &directory);
     }
-    free_directorylist(&directories);
     char *table = convert_arraychar(&charList);
     free_charlist(&charList);
-    int len = strlen(template) + strlen(table) + 100;
+    Directory directory = index_directorylist(&directories, 0);
+    int len = strlen(template) + strlen(table) + (strlen(directory.path) * 3) + 100;
     char *html = malloc((len + 1) * sizeof(char));
-    sprintf(html, template, table);
+    sprintf(html, template, directory.path, directory.path, directory.path, table);
+    free_directorylist(&directories);
     free(table);
     html[len] = 0;
     return html;

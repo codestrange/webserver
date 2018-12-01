@@ -1934,9 +1934,20 @@
             <h1 style="text-shadow:1px 1px 0 #ffffff">Web Server</h1>
         </header>
     </div>
+    <div class="w3-left-align w3-tiny" style="margin: 10px">
+        <div class="w3-dropdown-hover">
+            <button class="w3-button w3-blue">Order by ...</button>
+            <div class="w3-dropdown-content w3-bar-block">
+                <a href="%s?1" class="w3-bar-item w3-button">Name</a>
+                <a href="%s?2" class="w3-bar-item w3-button">Size</a>
+                <a href="%s?3" class="w3-bar-item w3-button">Modified</a>
+            </div>
+        </div>
+    </div>
     <div class="w3-card w3-responsive w3-hover-shadow w3-center" style="margin: 10px">
         <input class="w3-input w3-border w3-padding w3-tiny" type="text" placeholder="Search for names ..." id="input"
-            onkeyup="filter(0)"></div>
+            onkeyup="filter(0)">
+    </div>
     <div class="w3-card w3-responsive w3-hover-shadow w3-center" style="margin: 10px">
         <table class="w3-table-all w3-tiny w3-hoverable" id="table">
             <tbody>

@@ -3,6 +3,7 @@
 
 typedef struct Request {
     char *url;
+    char *param;
 } Request;
 
 bool is_hex(char c);

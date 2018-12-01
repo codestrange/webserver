@@ -148,6 +148,8 @@ bool get_directory(char *current_dir, char *path, char *filename, Directory *dir
 }
 
 bool get_directories(char *current_dir, char *path, DirectoryList *directoryList) {
+    Directory first;
+    Directory second;
     char *temp_current_dir = current_dir;
     char *temp_path = path;
     CharList charList = new_charlist(100);
@@ -171,13 +173,17 @@ bool get_directories(char *current_dir, char *path, DirectoryList *directoryList
         Directory directory;
         if (!get_directory(current_dir, path, d->d_name, &directory))
             return false;
-        if (!strncmp(directory.name, "..", 2) && strlen(directory.name) == 2)
-            insert_directorylist(directoryList, 0, directory);
-        else if (strncmp(directory.name, ".", 1) || strlen(directory.name) != 1)
+        if (!strncmp(directory.name, ".", 1) && strlen(directory.name) == 1)
+            first = directory;
+        else if (!strncmp(directory.name, "..", 2) && strlen(directory.name) == 2)
+            second = directory;
+        else
             append_directorylist(directoryList, directory);
     }
     free(full_path);
     closedir(dir);
-    merge_sort(directoryList, 1, directoryList->size - 1);
+    merge_sort(directoryList, 0, directoryList->size - 1);
+    insert_directorylist(directoryList, 0, second);
+    insert_directorylist(directoryList, 0, first);
     return true;
 }
