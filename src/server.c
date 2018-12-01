@@ -9,6 +9,7 @@
 #include "connection.h"
 #include "parser.h"
 #include "files.h"
+#include "utils.h"
 #define BUFF_SIZE 2048
 
 int main(int argc, char const *argv[]) {
@@ -26,6 +27,7 @@ int main(int argc, char const *argv[]) {
     char buf[BUFF_SIZE];
     ClientList clients = new_clientlist(1024);
     FileStatusList filets = new_filestatuslist(1024);
+    change_order(1);
     /*Fin de la inicialización*/
     while (true) {
         /*Iniciar conjunto del Poll*/
@@ -73,6 +75,9 @@ int main(int argc, char const *argv[]) {
                     char *dir = malloc(BUFF_SIZE * sizeof(char));
                     getcwd(dir, BUFF_SIZE);
                     if ( is_folder(dir, request.url) ) {
+                        if ( request.param != NULL) {
+                            change_order(atoi(request.param));
+                        }
                         char *response = get_response(dir, request.url);
                         write(fds[i + 1].fd, response, strlen(response));
                         free(response);

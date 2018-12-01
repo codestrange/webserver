@@ -85,6 +85,9 @@ Request parse_request(char *arg) {
         char *_param = convert_arraychar(&charList2);
         result.param = _param;
     }
+    else {
+        result.param = NULL;
+    }
     free(temp);
     return result;
 }

@@ -1,6 +1,10 @@
 #include "directory.h"
 #include "utils.h"
 
+void change_order(int new_order) {
+    selected_order = new_order;
+}
+
 int str_compare(char *left, char *right) {
     while (*left && *right) {
         if (*left < *right)

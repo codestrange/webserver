@@ -3,7 +3,9 @@
 
 #include "directory.h"
 
-int selected_order = 1;
+int selected_order;
+
+void change_order(int new_order);
 
 int str_compare(char *left, char *right);
 
