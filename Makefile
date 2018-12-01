@@ -1,5 +1,5 @@
 port = 10050
-fdir = "/media/leynier/Leynier EXT 2TB/Package"
+fdir = "/media/deathekid/Win10/Users/Carlos/Desktop/Mio/YGOPRO/"
 
 run: compile
 	./bin/server ${port} ${fdir}
