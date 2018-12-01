@@ -137,6 +137,11 @@ bool get_directory(char *current_dir, char *path, char *filename, Directory *dir
         bzero(_size, digits);
         sprintf(_size, "%ld Bytes%c", info.st_size, '\0');
     }
+    if (!strcmp(_name, "..") && strlen(_name) == 2) {
+        free(_modified);
+        _modified = malloc(sizeof(char) * 10);
+        sprintf(_modified, "---");
+    }
     free_charlist(&_path_list);
     free_charlist(&_name_list);
     free_charlist(&_modified_list);
