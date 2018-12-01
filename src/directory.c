@@ -127,9 +127,16 @@ bool get_directory(char *current_dir, char *path, char *filename, Directory *dir
     char *_modified = convert_arraychar(&_modified_list);
     _modified[_modified_list.size - 1] = '\0';
     int digits = count_digits(info.st_size) + 10;
-    char *_size = malloc(sizeof(char) * digits);
-    bzero(_size, digits);
-    sprintf(_size, "%ld Bytes%c", info.st_size, '\0');
+    char *_size;
+    if (info.st_mode & __S_IFDIR) {
+        _size = malloc(sizeof(char) * 10);    
+        bzero(_size, 10);
+        sprintf(_size, "---%c", '\0');
+    } else {
+        _size = malloc(sizeof(char) * digits);
+        bzero(_size, digits);
+        sprintf(_size, "%ld Bytes%c", info.st_size, '\0');
+    }
     free_charlist(&_path_list);
     free_charlist(&_name_list);
     free_charlist(&_modified_list);
