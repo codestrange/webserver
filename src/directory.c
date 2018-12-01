@@ -144,6 +144,9 @@ bool get_directory(char *current_dir, char *path, char *filename, Directory *dir
     directory->name = _name;
     directory->modified = _modified;
     directory->size = _size;
+    directory->_size = info.st_size;
+    directory->_modified = info.st_mtime;
+    directory->is_file = info.st_mode & __S_IFREG;
     return true;
 }
 

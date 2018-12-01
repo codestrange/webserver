@@ -160,10 +160,18 @@ char *get_html(char *dir, char *url) {
     }
     char *table = convert_arraychar(&charList);
     free_charlist(&charList);
-    Directory directory = index_directorylist(&directories, 0);
-    int len = strlen(template) + strlen(table) + (strlen(directory.path) * 3) + 100;
-    char *html = malloc((len + 1) * sizeof(char));
-    sprintf(html, template, directory.path, directory.path, directory.path, table);
+    int len;
+    char *html;
+    if (directories.size > 0) {
+        Directory directory = index_directorylist(&directories, 0);
+        len = strlen(template) + strlen(table) + (strlen(directory.path) * 3) + 100;
+        html = malloc((len + 1) * sizeof(char));
+        sprintf(html, template, directory.path, directory.path, directory.path, table);
+    } else {
+        len = strlen(template) + strlen(table) + 100;
+        html = malloc((len + 1) * sizeof(char));
+        sprintf(html, template, "#", "#", "#", table);
+    }
     free_directorylist(&directories);
     free(table);
     html[len] = 0;

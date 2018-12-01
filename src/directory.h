@@ -8,6 +8,9 @@ typedef struct Directory {
     char *name;
     char *size;
     char *modified;
+    long _size;
+    long _modified;
+    bool is_file;
 } Directory;
 
 typedef struct DirectoryList {

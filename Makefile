@@ -1,5 +1,5 @@
 port = 10050
-fdir = "/media/leynier/Storage/Projects/webserver"
+fdir = "/media/leynier/Leynier EXT 2TB/Package"
 
 run: compile
 	./bin/server ${port} ${fdir}

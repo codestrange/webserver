@@ -76,12 +76,12 @@ Request parse_request(char *arg) {
     char *temp = convert_arraychar(&charList);
     char *request = decode(temp);
     char **_splited = str_split(request, '?');
-    charCharList = convert_CharCharList(_splited);
-    CharList charList1 = index_charcharlist(&charCharList, 0);
+    CharCharList charCharList2 = convert_CharCharList(_splited);
+    CharList charList1 = index_charcharlist(&charCharList2, 0);
     char *_url = convert_arraychar(&charList1);
     result.url = _url;
-    if (charCharList.size > 1) {
-        CharList charList2 = index_charcharlist(&charCharList, 1);
+    if (charCharList2.size > 1) {
+        CharList charList2 = index_charcharlist(&charCharList2, 1);
         char *_param = convert_arraychar(&charList2);
         result.param = _param;
     }

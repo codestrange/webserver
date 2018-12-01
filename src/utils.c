@@ -22,8 +22,33 @@ int str_compare(char *left, char *right) {
         return 1;
 }
 
-int compare(Directory *left, Directory *right) {
+int name_compare(Directory *left, Directory *right) {
     return str_compare(left->name, right->name);
+}
+
+int size_compare(Directory *left, Directory *right) {
+    if(!left->is_file && !right->is_file)
+        return name_compare(left, right);
+    else if (!left->is_file)
+        return 1;
+    else if (!right->is_file)
+        return -1;
+    return left->_size - right->_size;
+}
+
+int modified_compare(Directory *left, Directory *right) {
+    return right->_modified - left->_modified;
+}
+
+int compare(Directory *left, Directory *right) {
+    switch (selected_order) {
+        case 2:
+            return size_compare(left, right);
+        case 3:
+            return modified_compare(left, right);
+        default:
+            return name_compare(left, right);
+    }
 }
 
 void merge(DirectoryList *directories, int left, int middle, int right) {
