@@ -21,8 +21,8 @@ void insert_charlist(CharList *list, int index, char item) {
         list->capacity *= 2;
         list->array = realloc(list->array, list->capacity * sizeof(char));
     }
-    for (int i = index; i < list->size; ++i)
-        list->array[i + 1] = list->array[i];
+    for (int i = list->size; i > index; --i)
+        list->array[i] = list->array[i - 1];
     list->array[index] = item;
     ++list->size;
 }
@@ -80,8 +80,8 @@ void insert_charcharlist(CharCharList *list, int index, CharList item) {
         list->capacity *= 2;
         list->array = realloc(list->array, list->capacity * sizeof(CharList));
     }
-    for (int i = index; i < list->size; ++i)
-        list->array[i + 1] = list->array[i];
+    for (int i = list->size; i > index; --i)
+        list->array[i] = list->array[i - 1];
     list->array[index] = item;
     ++list->size;
 }
