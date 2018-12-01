@@ -5,12 +5,11 @@
 #include "list.h"
 
 Request parse_request(char *arg) {
-    //CharCharList charCharList = convert_CharCharList(str_split(arg, ' '));
+    char **splited = str_split(arg, ' ');
+    CharCharList charCharList = convert_CharCharList(splited);
     Request result;
-    strtok(arg, " ");
-    //CharList charList = index_charcharlist(&charCharList, 1);
-    //result.url = convert_arraychar(&charList);
-    result.url = strtok(NULL, " ");
+    CharList charList = index_charcharlist(&charCharList, 1);
+    result.url = convert_arraychar(&charList);
     return result;
 }
 
@@ -30,8 +29,8 @@ char **str_split(char *str, const char delim) {
         ++tmp;
     }
     count += (last_comma < (str + strlen(str) - 1)) + 1;
-    result = malloc(sizeof(char *) * count);
-    char *_str = malloc(sizeof(char) * strlen(str));
+    result = malloc(sizeof(char *) * (count + 5));
+    char *_str = malloc(sizeof(char) * (strlen(str)) + 5);
     char *_tmp = _str;
     tmp = str;
     while (true) {
