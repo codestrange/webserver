@@ -43,8 +43,8 @@ void insert_clientlist(ClientList *list, int index, Client item) {
         list->capacity *= 2;
         list->array = realloc(list->array, list->capacity * sizeof(Client));
     }
-    for (int i = index; i < list->size; ++i)
-        list->array[i + 1] = list->array[i];
+    for (int i = list->size; i > index; --i)
+        list->array[i] = list->array[i - 1];
     list->array[index] = item;
     ++list->size;
 }
