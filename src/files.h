@@ -37,6 +37,8 @@ char *template;
 
 bool check_mode(char *dir, char *url, int flag);
 
+long get_file_size(char *dir, char *url);
+
 bool is_file(char *dir, char *url);
 
 bool is_folder(char *dir, char *url);

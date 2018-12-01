@@ -73,6 +73,26 @@ void free_filestatuslist(FileStatusList *list) {
     free(list->array);
 }
 
+long get_file_size(char *dir, char *url) {
+    char *temp_dir = dir;
+    char *temp_url = url;
+    CharList charList = new_charlist(100);
+    while (*temp_dir) {
+        append_charlist(&charList, *temp_dir);
+        ++temp_dir;
+    }
+    while (*temp_url) {
+        append_charlist(&charList, *temp_url);
+        ++temp_url;
+    }
+    char *full_path = convert_arraychar(&charList);
+    free_charlist(&charList);
+    struct stat info;
+    stat(full_path, &info);
+    free(full_path);
+    return info.st_size;
+}
+
 bool check_mode(char *dir, char *url, int flag) {
     char *temp_dir = dir;
     char *temp_url = url;
