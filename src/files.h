@@ -53,4 +53,6 @@ char *get_html(char *path, char *url);
 
 char *get_response(char *dir, char *url);
 
+void send_file_response(FileStatus *file, int conectionfd);
+
 #endif
