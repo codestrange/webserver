@@ -8,7 +8,9 @@
 
 typedef struct FileStatus {
     int fd;
-    off_t *offset;
+    long size;
+    char *fname;
+    off_t offset;
 } FileStatus;
 
 typedef struct FileStatusList {

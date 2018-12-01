@@ -177,3 +177,21 @@ char *get_response(char *dir, char *url) {
     free(html);
     return response;
 }
+
+void send_file_response(FileStatus *file, int conectionfd) {
+    if( file->offset == 0 ) {
+        char *header = malloc((250 + strlen(file->fname)) * sizeof(char));
+        sprintf(header,"HTTP/1.1 200 OK\nAccept-Ranges: bytes\nCache-Control: must-revalidate\nContent-Description: File Transfer\nContent-Disposition: attachment; filename=%s\nContent-Length: %ld\nContent-Transfer-Encoding: binary\nExpires: 0\n\n", file->fname, file->size);
+        write(conectionfd, header, strlen(header));
+        free(header);
+    }
+    int status = sendfile(conectionfd, file->fd, &file->offset, 1024);
+    if( status < 0 ) {
+        perror("Error sending file");
+    }
+    else if( status < 1024 ){ 
+        close(conectionfd);
+        close(file->fd);
+        file->fd = -1;
+    }
+}
