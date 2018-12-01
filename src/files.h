@@ -2,6 +2,7 @@
 #define FILES
 
 #include <sys/sendfile.h>
+#include <stdbool.h>
 #include "directory.h"
 #include "list.h"
 
@@ -11,6 +12,12 @@ typedef struct File_Status{
 } File_Status;
 
 char *template;
+
+bool check_mode(char *dir, char *url, int flag);
+
+bool is_file(char *dir, char *url);
+
+bool is_folder(char *dir, char *url);
 
 void get_table(CharList *charList, Directory *directory);
 
