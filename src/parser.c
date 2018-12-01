@@ -4,6 +4,62 @@
 #include "parser.h"
 #include "list.h"
 
+bool is_hex(char c) {
+    return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+}
+
+int hex2dec(char c) {
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    }
+    switch (c) {
+        case 'a':
+        case 'A':
+            return 10;
+        case 'b':
+        case 'B':
+            return 11;
+        case 'c':
+        case 'C':
+            return 12;
+        case 'd':
+        case 'D':
+            return 13;
+        case 'e':
+        case 'E':
+            return 14;
+        default:
+            return 15;
+    }
+}
+
+char *decode(char *str) {
+    CharList charList = convert_CharList(str);
+    CharList result = new_charlist(10);
+    int i = 0;
+    while (i < charList.size) {
+        char c = index_charlist(&charList, i);
+        if (c == '%' && i + 2 < charList.size) {
+            char c1 = index_charlist(&charList, i + 1);
+            char c2 = index_charlist(&charList, i + 2);
+            if (is_hex(c1) && is_hex(c2)) {
+                int d1 = hex2dec(c1);
+                int d2 = hex2dec(c2);
+                c = (char) (d1 * 16 + d2);
+                append_charlist(&result, c);
+                i += 3;
+                continue;
+            }
+        }
+        append_charlist(&result, c);
+        ++i;
+    }
+    char *str_decoded = convert_arraychar(&result);
+    free_charlist(&charList);
+    free_charlist(&result);
+    return str_decoded;
+}
+
 char *get_filename(char *url) {
     char **splited = str_split(url, '/');
     CharCharList charCharList = convert_CharCharList(splited);
@@ -17,7 +73,9 @@ Request parse_request(char *arg) {
     CharCharList charCharList = convert_CharCharList(splited);
     Request result;
     CharList charList = index_charcharlist(&charCharList, 1);
-    result.url = convert_arraychar(&charList);
+    char *temp = convert_arraychar(&charList);
+    result.url = decode(temp);
+    free(temp);
     return result;
 }
 
