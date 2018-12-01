@@ -14,6 +14,65 @@
 #include "list.h"
 #include "directory.h"
 
+FileStatusList new_filestatuslist(int capacity) {
+    FileStatusList list;
+    list.capacity = capacity;
+    list.array = malloc(capacity * sizeof(FileStatus));
+    list.size = 0;
+    return list;
+}
+
+void insert_filestatuslist(FileStatusList *list, int index, FileStatus item) {
+    if (index < 0)
+        index = 0;
+    if (index > list->size)
+        index = list->size;
+    if (list->size == list->capacity) {
+        list->capacity *= 2;
+        list->array = realloc(list->array, list->capacity * sizeof(FileStatus));
+    }
+    for (int i = index; i < list->size; ++i)
+        list->array[i + 1] = list->array[i];
+    list->array[index] = item;
+    ++list->size;
+}
+
+void append_filestatuslist(FileStatusList *list, FileStatus item) {
+    insert_filestatuslist(list, list->size, item);
+}
+
+void clear_filestatuslist(FileStatusList *list) {
+    list->size = 0;
+}
+
+FileStatus remove_filestatuslist(FileStatusList *list, int index) {
+    if (index < 0)
+        index = 0;
+    if (index > list->size)
+        index = list->size;
+    FileStatus item = list->array[index];
+    for (int i = index; i < list->size - 1; ++i)
+        list->array[i] = list->array[i + 1];
+    --list->size;
+    return item;
+}
+
+FileStatus pop_filestatuslist(FileStatusList *list) {
+    return remove_filestatuslist(list, list->size - 1);
+}
+
+FileStatus index_filestatuslist(FileStatusList *list, int index) {
+    if (index < 0)
+        index = 0;
+    if (index > list->size)
+        index = list->size;
+    return list->array[index];
+}
+
+void free_filestatuslist(FileStatusList *list) {
+    free(list->array);
+}
+
 bool check_mode(char *dir, char *url, int flag) {
     char *temp_dir = dir;
     char *temp_url = url;

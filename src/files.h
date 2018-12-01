@@ -6,10 +6,32 @@
 #include "directory.h"
 #include "list.h"
 
-typedef struct File_Status{
+typedef struct FileStatus {
     int fd;
     off_t *offset;
-} File_Status;
+} FileStatus;
+
+typedef struct FileStatusList {
+    FileStatus *array;
+    int size;
+    int capacity;
+} FileStatusList;
+
+FileStatusList new_filestatuslist(int capacity);
+
+void insert_filestatuslist(FileStatusList *list, int index, FileStatus item);
+
+void append_filestatuslist(FileStatusList *list, FileStatus item);
+
+void clear_filestatuslist(FileStatusList *list);
+
+FileStatus remove_filestatuslist(FileStatusList *list, int index);
+
+FileStatus pop_filestatuslist(FileStatusList *list);
+
+FileStatus index_filestatuslist(FileStatusList *list, int index);
+
+void free_filestatuslist(FileStatusList *list);
 
 char *template;
 
