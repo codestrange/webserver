@@ -4,6 +4,14 @@
 #include "parser.h"
 #include "list.h"
 
+char *get_filename(char *url) {
+    char **splited = str_split(url, '/');
+    CharCharList charCharList = convert_CharCharList(splited);
+    CharList charList = index_charcharlist(&charCharList, charCharList.size - 1);
+    char *result = convert_arraychar(&charList);
+    return result;
+}
+
 Request parse_request(char *arg) {
     char **splited = str_split(arg, ' ');
     CharCharList charCharList = convert_CharCharList(splited);
