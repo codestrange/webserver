@@ -3,6 +3,8 @@
 
 #include "directory.h"
 
+int selected_order = 1;
+
 int str_compare(char *left, char *right);
 
 int compare(Directory *left, Directory *right);
