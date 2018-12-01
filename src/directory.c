@@ -12,6 +12,7 @@
 #include <sys/sysmacros.h>
 #include "directory.h"
 #include "list.h"
+#include "utils.h"
 
 DirectoryList new_directorylist(int capacity) {
     DirectoryList list;
@@ -163,10 +164,13 @@ bool get_directories(char *current_dir, char *path, DirectoryList *directoryList
         Directory directory;
         if (!get_directory(current_dir, path, d->d_name, &directory))
             return false;
-        if (strncmp(directory.name, ".", 1) || strlen(directory.name) != 1)
+        if (!strncmp(directory.name, "..", 2) && strlen(directory.name) == 2)
+            insert_directorylist(directoryList, 0, directory);
+        else if (strncmp(directory.name, ".", 1) || strlen(directory.name) != 1)
             append_directorylist(directoryList, directory);
     }
     free(full_path);
     closedir(dir);
+    merge_sort(directoryList, 1, directoryList->size - 1);
     return true;
 }
