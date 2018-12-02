@@ -194,14 +194,15 @@ void send_file_response(FileStatus *file, int conectionfd) {
         write(conectionfd, header, strlen(header));
         free(header);
     }
-    int status = sendfile(conectionfd, file->fd, &(file->offset), 1024);
+    int status = sendfile(conectionfd, file->fd, &(file->offset), (1<<20));
+    printf("sended->%d bytes\n", status);
     if( status < 0 ) {
         perror("Error sending file");
         close(conectionfd);
         close(file->fd);
         file->fd = -1;
     }
-    else if( status < 1024 ){ 
+    else if( status < (1<<20) ){ 
         close(conectionfd);
         close(file->fd);
         file->fd = -1;

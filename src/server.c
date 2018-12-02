@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <signal.h>
 #include "connection.h"
 #include "parser.h"
 #include "files.h"
@@ -14,6 +15,7 @@
 
 int main(int argc, char const *argv[]) {
     /*Iniciar el server*/
+    signal(SIGPIPE, SIG_IGN);
     int port = atoi(argv[1]);
     char const *fdir = argv[2];
     char *bdir = malloc(BUFF_SIZE * sizeof(char));
@@ -50,6 +52,7 @@ int main(int argc, char const *argv[]) {
         /*Ver nuevas conexiones*/
         if (fds[0].revents & POLLIN) {
             Client newclient = get_client_fd(listenfd);
+            printf("Creada conexion %d\n", newclient.fd);
             append_clientlist(&clients, newclient);
             FileStatus newfile;
             newfile.fd = -1;
@@ -58,9 +61,17 @@ int main(int argc, char const *argv[]) {
         for (int i = 0; i < n; ++i) {
             FileStatus check = index_filestatuslist(&filets, i);
             if ( (fds[i + 1].revents & POLLOUT) && check.fd != -1) {
+                if ( (fds[i + 1].revents & POLLHUP) ) {//Client cancel file transfer
+                    close(fds[i + 1].fd);
+                    close(check.fd);
+                    check.fd = -1;
+                    free(check.fname);
+                    ckill[i] = true;
+                    continue;
+                }
                 FileStatus fs = index_filestatuslist(&filets, i);
                 remove_filestatuslist(&filets, i);
-                send_file_response(&fs, fds[i + 1].fd);
+                send_file_response(&check, fds[i + 1].fd);
                 insert_filestatuslist(&filets, i, fs);
                 if ( check.fd == -1 ) {
                     free(check.fname);
@@ -71,7 +82,7 @@ int main(int argc, char const *argv[]) {
                 bzero(buf, BUFF_SIZE);
                 if (read(fds[i + 1].fd, buf, BUFF_SIZE) > 0) {
                     Request request = parse_request(buf);
-                    printf("Petición a la url: %s\n", request.url);
+                    printf("Petición a la url: %s por la conexion %d\n", request.url, fds[i + 1].fd);
                     char *dir = malloc(BUFF_SIZE * sizeof(char));
                     getcwd(dir, BUFF_SIZE);
                     if ( is_folder(dir, request.url) ) {
@@ -85,6 +96,7 @@ int main(int argc, char const *argv[]) {
                         ckill[i] = true;
                     }
                     else if ( is_file(dir, request.url) ) {
+                        printf("Iniciar transferencia del archivo %s a %d\n", request.url, fds[i + 1].fd);
                         char *path = malloc((strlen(dir) + strlen(request.url) + 5) * sizeof(char));
                         sprintf(path, "%s%s", dir, request.url);
                         FileStatus fs = index_filestatuslist(&filets, i);
@@ -112,6 +124,7 @@ int main(int argc, char const *argv[]) {
         int d = 0;
         for (int i = 0; i < n - d; ++i) {
             if ( ckill[i] ) {
+                printf("Eliminado cliente con conexion %d\n", index_clientlist(&clients, i).fd);
                 remove_clientlist(&clients, i);
                 remove_filestatuslist(&filets, i);
                 --i;
